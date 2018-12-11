@@ -4,6 +4,8 @@ from flask import Flask, render_template
 import sys
 import json
 
+LIMIT = 50 # pagenation limit
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -27,7 +29,12 @@ def json_pp():
         unit = dict_aa[key]
         unit['id'] = key
         rows.append(unit)
-#
+
+    #: rows total count
+    total = len(rows)
+    print("rows count : {}".format(total))
+
+
     return render_template('main.html', title=file_json, json_rows=rows)
 
 if __name__ == "__main__":
