@@ -1,30 +1,39 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
+from flask import request
 import sys
 import json
 import glob
 
-LIMIT = 50 # pagenation limit
 
 app = Flask(__name__)
 
 @app.context_processor
 def filelist():
-    return dict(myexample=glob.glob("./data/*"))
+    # ls data/
+    return dict(ls_data=glob.glob("data/*"))
 
 
 @app.route('/')
-def hello():
-    name = "top page"
-    return name
+def top_route():
+    return redirect(url_for('json_pp'))
 
 
-@app.route('/json')
+@app.route('/viewer')
 def json_pp():
-    file_json = "data/cities.json"
-    #file_json = "data/event_json.json"
-    fp_in = open (file_json,encoding='utf-8')
+    # URLの?以降を取得。 ( /viewer?file=hogehoge の hogehoge を変数filenameに代入)
+    filename = request.args.get('file', default = None, type = str)
+
+    file_json = filename
+    try:
+        fp_in = open (file_json,encoding='utf-8')
+    except:
+        # top、未指定の場合。
+        return render_template('main.html',
+                               title="json_sample",
+                               json_rows=[{'col1':'data1-col1','col2':'data1-col2'},{'col1':'data2-col1','col2':'data2-col2'}]
+                               )
     json_str = fp_in.read()
     fp_in.close()
     dict_aa = {}
