@@ -32,7 +32,8 @@ def json_pp():
         # top、未指定の場合。
         return render_template('main.html',
                                title="json_sample",
-                               json_rows=[{'col1':'data1-col1','col2':'data1-col2'},{'col1':'data2-col1','col2':'data2-col2'}]
+                               #json_rows=[{'col1':'data1-col1','col2':'data1-col2'},{'col1':'data2-col1','col2':'data2-col2'}]
+                               json_rows=[{"id":"rec1","col1":"data1-col1","col2":"data1-col2"},{"id":"rec2","col1":"data2-col1","col2":"data2-col2"}]
                                )
     json_str = fp_in.read()
     fp_in.close()
@@ -48,7 +49,7 @@ def json_pp():
     #: rows total count
     total = len(rows)
     print("rows count : {}".format(total))
-
+    print(rows)
 
     return render_template('main.html', title=file_json, json_rows=rows)
 
